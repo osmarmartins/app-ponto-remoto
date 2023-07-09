@@ -20,6 +20,7 @@ class RelatorioPage extends StatelessWidget {
             children: [
               TituloWidget(texto: 'Atividades do Mês'),
               SubTituloWidget(texto: 'Julho/2023'),
+              Divider(height: 10)
             ],
           ),
         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ponto_remoto/src/components/subtitulo_widget.dart';
-import 'package:ponto_remoto/src/components/texto_widget.dart';
+import 'package:ponto_remoto/src/components/texto_comum_widget.dart';
 import 'package:ponto_remoto/src/components/titulo_widget.dart';
 
 import '../helpers/date_time_helper.dart';
@@ -35,9 +35,7 @@ class _PontoPageState extends State<PontoPage> {
             children: [
               TituloWidget(texto: 'DATA: ${DateTimeHelper.formatarData(hoje)}'),
               SubTituloWidget(texto: widget.tarefa),
-              const SizedBox(
-                height: 10,
-              ),
+              const Divider(height: 10),
               Expanded(
                 child: Image.asset(
                   widget.tarefaIniciada
@@ -78,21 +76,21 @@ class _PontoPageState extends State<PontoPage> {
               ),
               Visibility(
                 visible: widget.tarefaIniciada,
-                child: TextoWidget(
+                child: TextoComumWidget(
                   texto:
                       'Iniciado as: ${DateTimeHelper.formatarHora(widget.inicio)}',
                 ),
               ),
               Visibility(
                 visible: !widget.tarefaIniciada,
-                child: TextoWidget(
+                child: TextoComumWidget(
                   texto:
                       'Última Marcação: ${DateTimeHelper.formatarDuration(widget.intervalo)}',
                 ),
               ),
               Visibility(
                 visible: !widget.tarefaIniciada,
-                child: TextoWidget(
+                child: TextoComumWidget(
                   texto:
                       'Acumulado no dia: ${DateTimeHelper.formatarDuration(widget.tempo)}',
                 ),

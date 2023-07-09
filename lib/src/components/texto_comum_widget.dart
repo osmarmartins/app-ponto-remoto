@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class TextoWidget extends StatelessWidget {
-  const TextoWidget({super.key, required this.texto});
+class TextoComumWidget extends StatelessWidget {
+  const TextoComumWidget({super.key, required this.texto});
   final String texto;
 
   @override
