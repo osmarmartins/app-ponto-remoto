@@ -1,104 +1,117 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ponto_remoto/src/components/subtitulo_widget.dart';
 import 'package:ponto_remoto/src/components/texto_comum_widget.dart';
 import 'package:ponto_remoto/src/components/titulo_widget.dart';
 
+import '../controllers/ponto_controller.dart';
 import '../helpers/date_time_helper.dart';
 
 // ignore: must_be_immutable
-class PontoPage extends StatefulWidget {
+class PontoPage extends StatelessWidget {
   PontoPage({super.key});
   final tarefa = 'Manutenção do sistema';
-  bool tarefaIniciada = false;
-  DateTime inicio = DateTime.now();
-  DateTime fim = DateTime.now();
   Duration intervalo = const Duration();
   Duration tempo = const Duration();
 
-  @override
-  State<PontoPage> createState() => _PontoPageState();
-}
+  final PontoController controller = Get.put(PontoController());
 
-class _PontoPageState extends State<PontoPage> {
   DateTime hoje = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ponto'),
-      ),
+      appBar: AppBar(title: const Text('Ponto')),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Center(
           child: Column(
             children: [
               TituloWidget(texto: 'DATA: ${DateTimeHelper.formatarData(hoje)}'),
-              SubTituloWidget(texto: widget.tarefa),
+              SubTituloWidget(texto: tarefa),
               const Divider(height: 10),
-              Expanded(
-                child: Image.asset(
-                  widget.tarefaIniciada
-                      ? 'assets/images/trabalhando.gif'
-                      : 'assets/images/parado.png',
-                  width: 200,
+              Obx(
+                () => Expanded(
+                  child: Image.asset(
+                    controller.tarefaIniciada.value
+                        ? 'assets/images/trabalhando.gif'
+                        : 'assets/images/parado.png',
+                    width: 200,
+                  ),
                 ),
               ),
-              !widget.tarefaIniciada
-                  ? ElevatedButton.icon(
-                      onPressed: () {
-                        setState(() {
-                          widget.inicio = DateTime.now();
-                          widget.fim = DateTime.now();
-                          widget.intervalo =
-                              widget.fim.difference(widget.inicio);
-                          widget.tarefaIniciada = true;
-                        });
-                      },
-                      icon: const Icon(Icons.timer_sharp),
-                      label: const Text('Iniciar'),
-                    )
-                  : ElevatedButton.icon(
-                      onPressed: () {
-                        setState(() {
-                          widget.fim = DateTime.now();
-                          widget.intervalo =
-                              widget.fim.difference(widget.inicio);
-                          widget.tempo = widget.tempo + widget.intervalo;
-                          widget.tarefaIniciada = false;
-                        });
-                      },
-                      icon: const Icon(Icons.timer_off_sharp),
-                      label: const Text('Finalizar'),
-                    ),
+              Obx(
+                () => Center(
+                    child: !controller.tarefaIniciada.value
+                        ? _iniciar()
+                        : _finalizar()),
+              ),
               const SizedBox(
                 height: 10,
               ),
-              Visibility(
-                visible: widget.tarefaIniciada,
-                child: TextoComumWidget(
-                  texto:
-                      'Iniciado as: ${DateTimeHelper.formatarHora(widget.inicio)}',
-                ),
+              Obx(
+                () {
+                  return Visibility(
+                    visible: controller.tarefaIniciada.value,
+                    child: TextoComumWidget(
+                      texto:
+                          'Iniciado as: ${DateTimeHelper.formatarHora(controller.inicio.value)}',
+                    ),
+                  );
+                },
               ),
-              Visibility(
-                visible: !widget.tarefaIniciada,
-                child: TextoComumWidget(
-                  texto:
-                      'Última Marcação: ${DateTimeHelper.formatarDuration(widget.intervalo)}',
-                ),
+              Obx(
+                () {
+                  return Visibility(
+                    visible: !controller.tarefaIniciada.value,
+                    child: TextoComumWidget(
+                      texto:
+                          'Última Marcação: ${DateTimeHelper.formatarDuration(intervalo)}',
+                    ),
+                  );
+                },
               ),
-              Visibility(
-                visible: !widget.tarefaIniciada,
-                child: TextoComumWidget(
-                  texto:
-                      'Acumulado no dia: ${DateTimeHelper.formatarDuration(widget.tempo)}',
-                ),
+              Obx(
+                () {
+                  return Visibility(
+                    visible: !controller.tarefaIniciada.value,
+                    child: TextoComumWidget(
+                      texto:
+                          'Acumulado no dia: ${DateTimeHelper.formatarDuration(tempo)}',
+                    ),
+                  );
+                },
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  ElevatedButton _finalizar() {
+    return ElevatedButton.icon(
+      onPressed: () {
+        intervalo = controller.fim.value.difference(controller.inicio.value);
+        controller.fim(DateTime.now());
+        tempo = tempo + intervalo;
+        controller.tarefaIniciada(false);
+      },
+      icon: const Icon(Icons.timer_off_sharp),
+      label: const Text('Finalizar'),
+    );
+  }
+
+  ElevatedButton _iniciar() {
+    return ElevatedButton.icon(
+      onPressed: () {
+        intervalo = controller.fim.value.difference(controller.inicio.value);
+        controller.inicio(DateTime.now());
+        controller.fim(DateTime.now());
+        controller.tarefaIniciada(true);
+      },
+      icon: const Icon(Icons.timer_sharp),
+      label: const Text('Iniciar'),
     );
   }
 }
