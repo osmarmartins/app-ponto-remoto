@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:ponto_remoto/src/components/subtitulo_widget.dart';
 import 'package:ponto_remoto/src/components/texto_comum_widget.dart';
 import 'package:ponto_remoto/src/components/titulo_widget.dart';
+import 'package:ponto_remoto/src/controllers/usuario_controller.dart';
 
 import '../controllers/ponto_controller.dart';
 import '../helpers/date_time_helper.dart';
@@ -13,6 +14,7 @@ class PontoPage extends StatelessWidget {
   PontoPage({super.key});
   final tarefa = 'Manutenção do sistema';
   final PontoController controller = Get.put(PontoController());
+  final UsuarioController usuarioController = Get.put(UsuarioController());
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,11 @@ class PontoPage extends StatelessWidget {
           child: Obx(
             () => Column(
               children: [
+                TituloWidget(
+                    texto:
+                        'DATA: ${DateTimeHelper.formatarData(DateTime.now())}'),
+                SubTituloWidget(texto: usuarioController.atividade.value),
+                const Divider(height: 10),
                 Expanded(
                   child: Image.asset(
                     controller.tarefaIniciada.value
