@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ponto_remoto/src/components/subtitulo_widget.dart';
@@ -7,19 +9,18 @@ import 'package:ponto_remoto/src/components/titulo_widget.dart';
 import '../controllers/ponto_controller.dart';
 import '../helpers/date_time_helper.dart';
 
-// ignore: must_be_immutable
 class PontoPage extends StatelessWidget {
   PontoPage({super.key});
   final tarefa = 'Manutenção do sistema';
-  Duration intervalo = const Duration();
-  Duration tempo = const Duration();
-
   final PontoController controller = Get.put(PontoController());
-
-  DateTime hoje = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      controller.atividadeAtual.value =
+          DateTime.now().difference(controller.inicio.value);
+    });
+
     return Scaffold(
       appBar: AppBar(title: const Text('Ponto')),
       body: Padding(
@@ -27,7 +28,9 @@ class PontoPage extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              TituloWidget(texto: 'DATA: ${DateTimeHelper.formatarData(hoje)}'),
+              TituloWidget(
+                  texto:
+                      'DATA: ${DateTimeHelper.formatarData(DateTime.now())}'),
               SubTituloWidget(texto: tarefa),
               const Divider(height: 10),
               Obx(
@@ -50,37 +53,50 @@ class PontoPage extends StatelessWidget {
                 height: 10,
               ),
               Obx(
-                () {
-                  return Visibility(
-                    visible: controller.tarefaIniciada.value,
-                    child: TextoComumWidget(
-                      texto:
-                          'Iniciado as: ${DateTimeHelper.formatarHora(controller.inicio.value)}',
-                    ),
-                  );
-                },
+                () => Visibility(
+                  visible: controller.tarefaIniciada.value,
+                  child: TextoComumWidget(
+                    texto:
+                        'Iniciou: ${DateTimeHelper.formatarHora(controller.inicio.value)}',
+                  ),
+                ),
               ),
               Obx(
-                () {
-                  return Visibility(
-                    visible: !controller.tarefaIniciada.value,
-                    child: TextoComumWidget(
-                      texto:
-                          'Última Marcação: ${DateTimeHelper.formatarDuration(intervalo)}',
-                    ),
-                  );
-                },
+                () => Visibility(
+                  visible: controller.tarefaIniciada.value,
+                  child: SubTituloWidget(
+                    texto:
+                        'Atividade Atual: ${DateTimeHelper.formatarDuration(controller.atividadeAtual.value)}',
+                  ),
+                ),
               ),
               Obx(
-                () {
-                  return Visibility(
-                    visible: !controller.tarefaIniciada.value,
-                    child: TextoComumWidget(
-                      texto:
-                          'Acumulado no dia: ${DateTimeHelper.formatarDuration(tempo)}',
-                    ),
-                  );
-                },
+                () => Visibility(
+                  visible: !controller.tarefaIniciada.value &&
+                      controller.tempo.value > const Duration(seconds: 0),
+                  child: TextoComumWidget(
+                    texto:
+                        'Finalizou: ${DateTimeHelper.formatarHora(controller.fim.value)}',
+                  ),
+                ),
+              ),
+              Obx(
+                () => Visibility(
+                  visible: controller.tempo.value > const Duration(seconds: 0),
+                  child: TextoComumWidget(
+                    texto:
+                        'Última Atividade: ${DateTimeHelper.formatarDuration(controller.intervalo.value)}',
+                  ),
+                ),
+              ),
+              Obx(
+                () => Visibility(
+                  visible: controller.tempo.value > const Duration(seconds: 0),
+                  child: TextoComumWidget(
+                    texto:
+                        'Acumulado no dia: ${DateTimeHelper.formatarDuration(controller.tempo.value)}',
+                  ),
+                ),
               ),
             ],
           ),
@@ -89,29 +105,33 @@ class PontoPage extends StatelessWidget {
     );
   }
 
-  ElevatedButton _finalizar() {
-    return ElevatedButton.icon(
-      onPressed: () {
-        intervalo = controller.fim.value.difference(controller.inicio.value);
-        controller.fim(DateTime.now());
-        tempo = tempo + intervalo;
-        controller.tarefaIniciada(false);
-      },
-      icon: const Icon(Icons.timer_off_sharp),
-      label: const Text('Finalizar'),
-    );
-  }
-
   ElevatedButton _iniciar() {
     return ElevatedButton.icon(
       onPressed: () {
-        intervalo = controller.fim.value.difference(controller.inicio.value);
-        controller.inicio(DateTime.now());
-        controller.fim(DateTime.now());
-        controller.tarefaIniciada(true);
+        controller.intervalo.value =
+            controller.fim.value.difference(controller.inicio.value);
+        controller.atividadeAtual.value =
+            const Duration(seconds: 0, minutes: 0, hours: 0);
+        controller.inicio.value = DateTime.now();
+        controller.fim.value = DateTime.now();
+        controller.tarefaIniciada.value = true;
       },
       icon: const Icon(Icons.timer_sharp),
       label: const Text('Iniciar'),
+    );
+  }
+
+  ElevatedButton _finalizar() {
+    return ElevatedButton.icon(
+      onPressed: () {
+        controller.fim.value = DateTime.now();
+        controller.intervalo.value =
+            controller.fim.value.difference(controller.inicio.value);
+        controller.tempo.value += controller.intervalo.value;
+        controller.tarefaIniciada.value = false;
+      },
+      icon: const Icon(Icons.timer_off_sharp),
+      label: const Text('Finalizar'),
     );
   }
 }
