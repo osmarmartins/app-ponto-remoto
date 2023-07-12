@@ -26,15 +26,10 @@ class PontoPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Center(
-          child: Column(
-            children: [
-              TituloWidget(
-                  texto:
-                      'DATA: ${DateTimeHelper.formatarData(DateTime.now())}'),
-              SubTituloWidget(texto: tarefa),
-              const Divider(height: 10),
-              Obx(
-                () => Expanded(
+          child: Obx(
+            () => Column(
+              children: [
+                Expanded(
                   child: Image.asset(
                     controller.tarefaIniciada.value
                         ? 'assets/images/trabalhando.gif'
@@ -42,36 +37,25 @@ class PontoPage extends StatelessWidget {
                     width: 200,
                   ),
                 ),
-              ),
-              Obx(
-                () => Center(
-                    child: !controller.tarefaIniciada.value
-                        ? _iniciar()
-                        : _finalizar()),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Obx(
-                () => Visibility(
+                !controller.tarefaIniciada.value ? _iniciar() : _finalizar(),
+                const SizedBox(
+                  height: 10,
+                ),
+                Visibility(
                   visible: controller.tarefaIniciada.value,
                   child: TextoComumWidget(
                     texto:
                         'Iniciou: ${DateTimeHelper.formatarHora(controller.inicio.value)}',
                   ),
                 ),
-              ),
-              Obx(
-                () => Visibility(
+                Visibility(
                   visible: controller.tarefaIniciada.value,
                   child: SubTituloWidget(
                     texto:
                         'Atividade Atual: ${DateTimeHelper.formatarDuration(controller.atividadeAtual.value)}',
                   ),
                 ),
-              ),
-              Obx(
-                () => Visibility(
+                Visibility(
                   visible: !controller.tarefaIniciada.value &&
                       controller.tempo.value > const Duration(seconds: 0),
                   child: TextoComumWidget(
@@ -79,26 +63,22 @@ class PontoPage extends StatelessWidget {
                         'Finalizou: ${DateTimeHelper.formatarHora(controller.fim.value)}',
                   ),
                 ),
-              ),
-              Obx(
-                () => Visibility(
+                Visibility(
                   visible: controller.tempo.value > const Duration(seconds: 0),
                   child: TextoComumWidget(
                     texto:
                         'Última Atividade: ${DateTimeHelper.formatarDuration(controller.intervalo.value)}',
                   ),
                 ),
-              ),
-              Obx(
-                () => Visibility(
+                Visibility(
                   visible: controller.tempo.value > const Duration(seconds: 0),
                   child: TextoComumWidget(
                     texto:
                         'Acumulado no dia: ${DateTimeHelper.formatarDuration(controller.tempo.value)}',
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
