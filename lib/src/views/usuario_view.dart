@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ponto_remoto/src/components/campo_texto_widget.dart';
 import 'package:ponto_remoto/src/components/titulo_widget.dart';
+import 'package:ponto_remoto/src/controllers/usuario_controller.dart';
 
 class UsuarioPage extends StatefulWidget {
   const UsuarioPage({super.key});
@@ -10,12 +12,17 @@ class UsuarioPage extends StatefulWidget {
 }
 
 class _UsuarioPageState extends State<UsuarioPage> {
+  var controller = Get.put(UsuarioController());
+
   var nomeController = TextEditingController();
   var emailController = TextEditingController();
   var tarefaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    nomeController.text = controller.nome.value;
+    emailController.text = controller.email.value;
+    tarefaController.text = controller.atividade.value;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -44,7 +51,11 @@ class _UsuarioPageState extends State<UsuarioPage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                controller.nome.value = nomeController.text;
+                controller.email.value = emailController.text;
+                controller.atividade.value = tarefaController.text;
+              },
               icon: const Icon(Icons.check),
               label: const Text('Salvar'),
             ),
