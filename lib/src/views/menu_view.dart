@@ -45,7 +45,7 @@ class _MenuPageState extends State<MenuPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_rounded),
-            label: 'Perfil',
+            label: 'Usuário',
           ),
         ],
       ),

@@ -1,15 +1,20 @@
 class Ponto {
-  String idUsuario;
-  String tarefa;
-  DateTime data;
+  String usuario;
+  String projeto;
+  String atividade;
   DateTime inicio;
   DateTime? fim;
 
   Ponto({
-    required this.idUsuario,
-    required this.tarefa,
-    required this.data,
+    required this.usuario,
+    required this.projeto,
+    required this.atividade,
     required this.inicio,
     this.fim,
   });
+
+  @override
+  String toString() {
+    return 'ponto: { usuario: $usuario, projeto: $projeto, atividade: $atividade, inicio: $inicio, fim: $fim }';
+  }
 }

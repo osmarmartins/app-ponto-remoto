@@ -14,15 +14,15 @@ class UsuarioPage extends StatefulWidget {
 class _UsuarioPageState extends State<UsuarioPage> {
   var controller = Get.put(UsuarioController());
 
-  var nomeController = TextEditingController();
-  var emailController = TextEditingController();
-  var tarefaController = TextEditingController();
+  var campoNome = TextEditingController();
+  var campoProjeto = TextEditingController();
+  var campoAtividade = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    nomeController.text = controller.nome.value;
-    emailController.text = controller.email.value;
-    tarefaController.text = controller.atividade.value;
+    campoNome.text = controller.nome.value;
+    campoProjeto.text = controller.projeto.value;
+    campoAtividade.text = controller.atividade.value;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -38,23 +38,24 @@ class _UsuarioPageState extends State<UsuarioPage> {
             const SizedBox(height: 20),
             CampoTextoWidget(
               campo: 'Nome',
-              controller: nomeController,
+              controller: campoNome,
             ),
             CampoTextoWidget(
-              campo: 'E-mail',
-              controller: emailController,
+              campo: 'Projeto',
+              controller: campoProjeto,
               keyboardType: TextInputType.emailAddress,
             ),
             CampoTextoWidget(
               campo: 'Atividade/Tarefa',
-              controller: tarefaController,
+              controller: campoAtividade,
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: () {
-                controller.nome.value = nomeController.text;
-                controller.email.value = emailController.text;
-                controller.atividade.value = tarefaController.text;
+                controller.nome.value = campoNome.text;
+                controller.projeto.value = campoProjeto.text;
+                controller.atividade.value = campoAtividade.text;
+                FocusScope.of(context).unfocus();
               },
               icon: const Icon(Icons.check),
               label: const Text('Salvar'),
