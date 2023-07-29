@@ -38,7 +38,7 @@ class Ponto {
     );
   }
 
-  Map<String, Object?> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'usuario': usuario,
       'projeto': projeto,
