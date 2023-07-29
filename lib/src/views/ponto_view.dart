@@ -117,7 +117,7 @@ class PontoPage extends StatelessWidget {
 
   ElevatedButton _finalizar() {
     return ElevatedButton.icon(
-      onPressed: () {
+      onPressed: () async {
         controller.fim.value = DateTime.now();
         controller.intervalo.value =
             controller.fim.value.difference(controller.inicio.value);
@@ -131,14 +131,7 @@ class PontoPage extends StatelessWidget {
             inicio: controller.inicio.value,
             fim: controller.fim.value));
 
-        relatorioController.items = db.findAll();
-
-        // relatorioController.adicionarPonto(Ponto(
-        //     usuario: usuarioController.nome.value,
-        //     projeto: usuarioController.projeto.value,
-        //     atividade: usuarioController.atividade.value,
-        //     inicio: controller.inicio.value,
-        //     fim: controller.fim.value));
+        relatorioController.items = await db.findAll();
       },
       icon: const Icon(Icons.timer_off_sharp),
       label: const Text('Finalizar'),

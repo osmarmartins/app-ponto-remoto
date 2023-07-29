@@ -53,7 +53,5 @@ class PontoDatabase {
     });
 
     return lista;
-
-    // return result.map((e) => Ponto.fromJson(e)).toList();
   }
 }

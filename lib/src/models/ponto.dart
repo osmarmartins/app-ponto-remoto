@@ -28,16 +28,6 @@ class Ponto {
     return 'ponto: { usuario: $usuario, projeto: $projeto, atividade: $atividade, inicio: $inicio, fim: $fim }';
   }
 
-  static fromJson(Map<String, dynamic> ponto) {
-    return Ponto(
-      usuario: ponto['usuario'],
-      projeto: ponto['projeto'],
-      atividade: ponto['atividade'],
-      inicio: DateTime.parse(ponto['inicio']),
-      fim: DateTime.parse(ponto['fim']),
-    );
-  }
-
   Map<String, dynamic> toJson() {
     return {
       'usuario': usuario,

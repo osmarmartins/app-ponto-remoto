@@ -5,7 +5,9 @@ import '../models/ponto.dart';
 class RelatorioController extends GetxController {
   RxList<Ponto> pontos = <Ponto>[].obs;
 
-  set items(Future<List<Ponto>> items) {}
+  set items(List<Ponto> items) {
+    pontos.assignAll(items);
+  }
 
   void adicionarPonto(Ponto ponto) {
     pontos.add(ponto);
