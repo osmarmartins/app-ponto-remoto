@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 
 class UsuarioController extends GetxController {
-  var nome = 'Osmar'.obs;
-  var projeto = 'ASERP'.obs;
-  var atividade = 'Implantação TEF'.obs;
+  var nome = ''.obs;
+  var projeto = ''.obs;
+  var atividade = ''.obs;
 
   String getDescricaoAtividade() {
     return '${projeto.value} - ${atividade.value}';

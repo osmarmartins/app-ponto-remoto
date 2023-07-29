@@ -28,7 +28,7 @@ class Ponto {
     return 'ponto: { usuario: $usuario, projeto: $projeto, atividade: $atividade, inicio: $inicio, fim: $fim }';
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'usuario': usuario,
       'projeto': projeto,

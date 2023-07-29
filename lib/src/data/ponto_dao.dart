@@ -1,36 +1,18 @@
+import 'package:ponto_remoto/src/helpers/database_helper.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 
 import '../models/ponto.dart';
 
-class PontoDatabase {
+class PontoDAO {
   Future<Database> getDB() async {
-    final database = openDatabase(
-      join(await getDatabasesPath(), 'pontoremoto.db'),
-      onCreate: (db, version) {
-        return db.execute(
-          '''
-        CREATE TABLE pontos (
-          id INTEGER PRIMARY KEY,
-          usuario TEXT,
-          projeto TEXT,
-          atividade TEXT,
-          inicio TEXT,
-          fim TEXT
-        )
-        ''',
-        );
-      },
-      version: 1,
-    );
-    return database;
+    return DatabaseHelper.getInstance().getDatabase();
   }
 
   Future<void> save(Ponto ponto) async {
     final db = await getDB();
     await db.insert(
       'pontos',
-      ponto.toJson(),
+      ponto.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
