@@ -22,7 +22,7 @@ class _MenuPageState extends State<MenuPage> {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           PontoPage(),
-          const RelatorioPage(),
+          RelatorioPage(),
           const UsuarioPage(),
         ],
       ),

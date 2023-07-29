@@ -7,6 +7,8 @@ import 'package:ponto_remoto/src/components/texto_comum_widget.dart';
 import 'package:ponto_remoto/src/components/titulo_widget.dart';
 import 'package:ponto_remoto/src/controllers/relatorio_controller.dart';
 import 'package:ponto_remoto/src/controllers/usuario_controller.dart';
+import 'package:ponto_remoto/src/data/database.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../controllers/ponto_controller.dart';
 import '../helpers/date_time_helper.dart';
@@ -14,7 +16,6 @@ import '../models/ponto.dart';
 
 class PontoPage extends StatelessWidget {
   PontoPage({super.key});
-  final tarefa = 'Manutenção do sistema';
   final PontoController controller = Get.put(PontoController());
   final UsuarioController usuarioController = Get.put(UsuarioController());
   final RelatorioController relatorioController =
@@ -122,16 +123,13 @@ class PontoPage extends StatelessWidget {
             controller.fim.value.difference(controller.inicio.value);
         controller.tempo.value += controller.intervalo.value;
         controller.tarefaIniciada.value = false;
+
         relatorioController.adicionarPonto(Ponto(
             usuario: usuarioController.nome.value,
             projeto: usuarioController.projeto.value,
             atividade: usuarioController.atividade.value,
             inicio: controller.inicio.value,
             fim: controller.fim.value));
-
-        relatorioController.pontos.forEach((p) {
-          print(p.toString());
-        });
       },
       icon: const Icon(Icons.timer_off_sharp),
       label: const Text('Finalizar'),

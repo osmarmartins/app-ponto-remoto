@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:ponto_remoto/src/components/subtitulo_widget.dart';
-import 'package:ponto_remoto/src/components/titulo_widget.dart';
+import 'package:get/get.dart';
+
+import '../controllers/relatorio_controller.dart';
+import '../controllers/usuario_controller.dart';
+import '../helpers/date_time_helper.dart';
 
 class RelatorioPage extends StatelessWidget {
-  const RelatorioPage({super.key});
+  RelatorioPage({super.key});
+
+  final UsuarioController usuarioController = Get.put(UsuarioController());
+  final RelatorioController controller = Get.put(RelatorioController());
 
   @override
   Widget build(BuildContext context) {
+    var items = controller.pontos;
+    var tempo = DateTimeHelper.formatarDuration(controller.tempoTotal());
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Relatório',
+        title: Text(
+          'Relatório - Duração $tempo',
         ),
       ),
-      body: const Center(
-        child: Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              TituloWidget(texto: 'Atividades do Mês'),
-              SubTituloWidget(texto: 'Julho/2023'),
-              Divider(height: 10)
-            ],
-          ),
-        ),
+      body: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          final item = items[index];
+
+          return ListTile(
+            title: Text('${item.projeto} - ${item.atividade}'),
+            subtitle: Text(item.duracao()),
+          );
+        },
       ),
     );
   }
