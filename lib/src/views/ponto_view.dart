@@ -131,7 +131,7 @@ class PontoPage extends StatelessWidget {
             inicio: controller.inicio.value,
             fim: controller.fim.value));
 
-        relatorioController.items = await db.findAll();
+        relatorioController.items = await db.findAll(DateTime.now());
       },
       icon: const Icon(Icons.timer_off_sharp),
       label: const Text('Finalizar'),

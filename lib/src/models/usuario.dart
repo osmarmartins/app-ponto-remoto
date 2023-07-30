@@ -8,4 +8,12 @@ class Usuario {
     required this.projeto,
     required this.tarefa,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'nome': nome,
+      'projeto': projeto,
+      'tarefa': tarefa,
+    };
+  }
 }

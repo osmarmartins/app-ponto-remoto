@@ -21,4 +21,11 @@ class DateTimeHelper {
     String ano = UtilsHelper.twoDigits(dateTime.year);
     return '$dia/$mes/$ano';
   }
+
+  static String formatarDataSQL(DateTime dateTime) {
+    String dia = UtilsHelper.twoDigits(dateTime.day);
+    String mes = UtilsHelper.twoDigits(dateTime.month);
+    String ano = UtilsHelper.twoDigits(dateTime.year);
+    return '$ano-$mes-$dia';
+  }
 }

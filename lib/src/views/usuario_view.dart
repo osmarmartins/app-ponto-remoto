@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:ponto_remoto/src/components/campo_texto_widget.dart';
 import 'package:ponto_remoto/src/components/titulo_widget.dart';
 import 'package:ponto_remoto/src/controllers/usuario_controller.dart';
+import 'package:ponto_remoto/src/data/usuario_dao.dart';
+import 'package:ponto_remoto/src/models/usuario.dart';
 
 class UsuarioPage extends StatefulWidget {
   const UsuarioPage({super.key});
@@ -17,6 +19,8 @@ class _UsuarioPageState extends State<UsuarioPage> {
   var campoNome = TextEditingController();
   var campoProjeto = TextEditingController();
   var campoAtividade = TextEditingController();
+
+  var dao = UsuarioDAO();
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +59,13 @@ class _UsuarioPageState extends State<UsuarioPage> {
                 controller.nome.value = campoNome.text;
                 controller.projeto.value = campoProjeto.text;
                 controller.atividade.value = campoAtividade.text;
+                dao.save(
+                  Usuario(
+                    nome: campoNome.text,
+                    projeto: campoProjeto.text,
+                    tarefa: campoAtividade.text,
+                  ),
+                );
                 FocusScope.of(context).unfocus();
               },
               icon: const Icon(Icons.check),

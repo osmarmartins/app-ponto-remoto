@@ -1,4 +1,5 @@
 import 'package:ponto_remoto/src/helpers/database_helper.dart';
+import 'package:ponto_remoto/src/helpers/date_time_helper.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../models/ponto.dart';
@@ -17,9 +18,19 @@ class PontoDAO {
     );
   }
 
-  Future<List<Ponto>> findAll() async {
+  Future<List<Ponto>> findAll(DateTime data) async {
+    var arg = '${DateTimeHelper.formatarDataSQL(data)}%';
+
+    print(arg);
+
     final db = await getDB();
-    final List<Map<String, dynamic>> result = await db.query('pontos');
+    final List<Map<String, dynamic>> result = await db.query(
+      'pontos',
+      columns: ['*'],
+      where: 'inicio like ?',
+      whereArgs: [arg],
+    );
+
     var lista = List.generate(result.length, (i) {
       return Ponto(
         usuario: result[i]['usuario'],
