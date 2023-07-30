@@ -57,7 +57,7 @@ class _UsuarioPageState extends State<UsuarioPage> {
             ElevatedButton.icon(
               onPressed: () {
                 controller.nome.value = campoNome.text;
-                controller.projeto.value = campoProjeto.text;
+                controller.projeto.value = campoProjeto.text.toUpperCase();
                 controller.atividade.value = campoAtividade.text;
                 dao.save(
                   Usuario(
