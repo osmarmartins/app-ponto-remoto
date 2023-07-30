@@ -32,10 +32,6 @@ class UsuarioDAO {
       },
     );
 
-    lista.forEach((e) {
-      print('${e.nome} - ${e.projeto} - ${e.tarefa}');
-    });
-
     return lista[0];
   }
 }

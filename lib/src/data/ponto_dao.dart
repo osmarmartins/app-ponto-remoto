@@ -20,9 +20,6 @@ class PontoDAO {
 
   Future<List<Ponto>> findAll(DateTime data) async {
     var arg = '${DateTimeHelper.formatarDataSQL(data)}%';
-
-    print(arg);
-
     final db = await getDB();
     final List<Map<String, dynamic>> result = await db.query(
       'pontos',
@@ -39,10 +36,6 @@ class PontoDAO {
         inicio: DateTime.parse(result[i]['inicio']),
         fim: DateTime.parse(result[i]['fim']),
       );
-    });
-
-    lista.forEach((e) {
-      print('${e.projeto} - ${e.atividade} - ${e.inicio}');
     });
 
     return lista;
