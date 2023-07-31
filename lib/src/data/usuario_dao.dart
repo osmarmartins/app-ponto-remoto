@@ -32,6 +32,14 @@ class UsuarioDAO {
       },
     );
 
+    if (result.isEmpty) {
+      return Usuario(
+        nome: 'não definido',
+        projeto: 'não definido',
+        tarefa: 'não definida',
+      );
+    }
+
     return lista[0];
   }
 }

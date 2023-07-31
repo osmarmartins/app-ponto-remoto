@@ -5,21 +5,24 @@ import 'package:get/get.dart';
 import 'package:ponto_remoto/src/components/subtitulo_widget.dart';
 import 'package:ponto_remoto/src/components/texto_comum_widget.dart';
 import 'package:ponto_remoto/src/components/titulo_widget.dart';
+import 'package:ponto_remoto/src/controllers/ponto_controller.dart';
 import 'package:ponto_remoto/src/controllers/relatorio_controller.dart';
 import 'package:ponto_remoto/src/controllers/usuario_controller.dart';
 import 'package:ponto_remoto/src/data/ponto_dao.dart';
+import 'package:ponto_remoto/src/helpers/date_time_helper.dart';
 
-import '../controllers/ponto_controller.dart';
-import '../helpers/date_time_helper.dart';
-import '../models/ponto.dart';
-
-class PontoPage extends StatelessWidget {
+class PontoPage extends StatelessWidget implements Bindings {
   PontoPage({super.key});
   final db = PontoDAO();
   final PontoController controller = Get.put(PontoController());
   final UsuarioController usuarioController = Get.put(UsuarioController());
   final RelatorioController relatorioController =
       Get.put(RelatorioController());
+
+  @override
+  void dependencies() {
+    Get.lazyPut(() => PontoController());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,9 @@ class PontoPage extends StatelessWidget {
                     width: 200,
                   ),
                 ),
-                !controller.tarefaIniciada.value ? _iniciar() : _finalizar(),
+                !controller.tarefaIniciada.value
+                    ? _botaoIniciar()
+                    : _botaoFinalizar(),
                 const SizedBox(
                   height: 10,
                 ),
@@ -99,40 +104,17 @@ class PontoPage extends StatelessWidget {
     );
   }
 
-  ElevatedButton _iniciar() {
+  ElevatedButton _botaoIniciar() {
     return ElevatedButton.icon(
-      onPressed: () {
-        controller.intervalo.value =
-            controller.fim.value.difference(controller.inicio.value);
-        controller.atividadeAtual.value =
-            const Duration(seconds: 0, minutes: 0, hours: 0);
-        controller.inicio.value = DateTime.now();
-        controller.fim.value = DateTime.now();
-        controller.tarefaIniciada.value = true;
-      },
+      onPressed: () => controller.iniciarPonto(),
       icon: const Icon(Icons.timer_sharp),
       label: const Text('Iniciar'),
     );
   }
 
-  ElevatedButton _finalizar() {
+  ElevatedButton _botaoFinalizar() {
     return ElevatedButton.icon(
-      onPressed: () async {
-        controller.fim.value = DateTime.now();
-        controller.intervalo.value =
-            controller.fim.value.difference(controller.inicio.value);
-        controller.tempo.value += controller.intervalo.value;
-        controller.tarefaIniciada.value = false;
-
-        db.save(Ponto(
-            usuario: usuarioController.nome.value,
-            projeto: usuarioController.projeto.value,
-            atividade: usuarioController.atividade.value,
-            inicio: controller.inicio.value,
-            fim: controller.fim.value));
-
-        relatorioController.items = await db.findAll(DateTime.now());
-      },
+      onPressed: () => controller.finalizarPonto(),
       icon: const Icon(Icons.timer_off_sharp),
       label: const Text('Finalizar'),
     );
