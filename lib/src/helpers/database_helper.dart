@@ -44,7 +44,7 @@ class DatabaseHelper {
 
   void _createTableUsuario(Database db) async {
     await db.execute('''
-        CREATE TABLE usuario (
+        CREATE TABLE config (
           id INTEGER PRIMARY KEY,
           nome TEXT,
           projeto TEXT,

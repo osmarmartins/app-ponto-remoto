@@ -5,13 +5,13 @@ import 'package:ponto_remoto/src/components/titulo_widget.dart';
 import 'package:ponto_remoto/src/models/ponto.dart';
 
 import '../controllers/relatorio_controller.dart';
-import '../controllers/usuario_controller.dart';
+import '../controllers/config_controller.dart';
 import '../helpers/date_time_helper.dart';
 
 class RelatorioPage extends StatelessWidget {
   RelatorioPage({super.key});
 
-  final UsuarioController usuarioController = Get.put(UsuarioController());
+  final ConfigController usuarioController = Get.put(ConfigController());
   final RelatorioController controller = Get.put(RelatorioController());
 
   @override

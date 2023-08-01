@@ -7,7 +7,7 @@ import 'package:ponto_remoto/src/components/texto_comum_widget.dart';
 import 'package:ponto_remoto/src/components/titulo_widget.dart';
 import 'package:ponto_remoto/src/controllers/ponto_controller.dart';
 import 'package:ponto_remoto/src/controllers/relatorio_controller.dart';
-import 'package:ponto_remoto/src/controllers/usuario_controller.dart';
+import 'package:ponto_remoto/src/controllers/config_controller.dart';
 import 'package:ponto_remoto/src/data/ponto_dao.dart';
 import 'package:ponto_remoto/src/helpers/date_time_helper.dart';
 
@@ -15,7 +15,7 @@ class PontoPage extends StatelessWidget implements Bindings {
   PontoPage({super.key});
   final db = PontoDAO();
   final PontoController controller = Get.put(PontoController());
-  final UsuarioController usuarioController = Get.put(UsuarioController());
+  final ConfigController usuarioController = Get.put(ConfigController());
   final RelatorioController relatorioController =
       Get.put(RelatorioController());
 

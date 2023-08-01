@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ponto_remoto/src/components/campo_texto_widget.dart';
 import 'package:ponto_remoto/src/components/titulo_widget.dart';
-import 'package:ponto_remoto/src/controllers/usuario_controller.dart';
-import 'package:ponto_remoto/src/data/usuario_dao.dart';
-import 'package:ponto_remoto/src/models/usuario.dart';
+import 'package:ponto_remoto/src/controllers/config_controller.dart';
+import 'package:ponto_remoto/src/data/config_dao.dart';
+import 'package:ponto_remoto/src/models/config.dart';
 
-class UsuarioPage extends StatefulWidget {
-  const UsuarioPage({super.key});
+class ConfigPage extends StatefulWidget {
+  const ConfigPage({super.key});
 
   @override
-  State<UsuarioPage> createState() => _UsuarioPageState();
+  State<ConfigPage> createState() => _ConfigPageState();
 }
 
-class _UsuarioPageState extends State<UsuarioPage> {
-  var controller = Get.put(UsuarioController());
+class _ConfigPageState extends State<ConfigPage> {
+  var controller = Get.put(ConfigController());
 
   var campoNome = TextEditingController();
   var campoProjeto = TextEditingController();
   var campoAtividade = TextEditingController();
 
-  var dao = UsuarioDAO();
+  var dao = ConfigDAO();
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +60,9 @@ class _UsuarioPageState extends State<UsuarioPage> {
                 controller.projeto.value = campoProjeto.text.toUpperCase();
                 controller.atividade.value = campoAtividade.text;
                 dao.save(
-                  Usuario(
+                  Config(
                     nome: campoNome.text,
-                    projeto: campoProjeto.text,
+                    projeto: campoProjeto.text.toUpperCase(),
                     tarefa: campoAtividade.text,
                   ),
                 );

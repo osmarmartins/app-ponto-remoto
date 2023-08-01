@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ponto_remoto/src/views/ponto_view.dart';
 import 'package:ponto_remoto/src/views/relatorio_view.dart';
-import 'package:ponto_remoto/src/views/usuario_view.dart';
+import 'package:ponto_remoto/src/views/config_view.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -23,7 +23,7 @@ class _MenuPageState extends State<MenuPage> {
         children: [
           PontoPage(),
           RelatorioPage(),
-          const UsuarioPage(),
+          const ConfigPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -44,8 +44,8 @@ class _MenuPageState extends State<MenuPage> {
             label: 'Relatório',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Usuário',
+            icon: Icon(Icons.settings_rounded),
+            label: 'Configurações',
           ),
         ],
       ),

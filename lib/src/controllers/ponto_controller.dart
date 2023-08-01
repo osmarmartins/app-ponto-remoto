@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 import 'package:ponto_remoto/src/controllers/relatorio_controller.dart';
-import 'package:ponto_remoto/src/controllers/usuario_controller.dart';
+import 'package:ponto_remoto/src/controllers/config_controller.dart';
 import 'package:ponto_remoto/src/data/ponto_dao.dart';
 import 'package:ponto_remoto/src/models/ponto.dart';
 
 class PontoController extends GetxController implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => UsuarioController());
+    Get.lazyPut(() => ConfigController());
     Get.lazyPut(() => RelatorioController());
   }
 
@@ -27,7 +27,7 @@ class PontoController extends GetxController implements Bindings {
   var atividadeAtual = const Duration().obs;
 
   var dao = PontoDAO();
-  var usuarioController = Get.put(UsuarioController());
+  var usuarioController = Get.put(ConfigController());
   var relatorioController = Get.put(RelatorioController());
 
   void iniciarPonto() {

@@ -1,30 +1,30 @@
 import 'package:ponto_remoto/src/helpers/database_helper.dart';
-import 'package:ponto_remoto/src/models/usuario.dart';
+import 'package:ponto_remoto/src/models/config.dart';
 import 'package:sqflite/sqflite.dart';
 
-class UsuarioDAO {
+class ConfigDAO {
   Future<Database> getDB() async {
     return DatabaseHelper.getInstance().getDatabase();
   }
 
-  Future<void> save(Usuario usuario) async {
+  Future<void> save(Config config) async {
     final db = await getDB();
     await db.delete('usuario');
     await db.insert(
       'usuario',
-      usuario.toMap(),
+      config.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  Future<Usuario> find() async {
+  Future<Config> find() async {
     final db = await getDB();
     final List<Map<String, dynamic>> result = await db.query('usuario');
 
     var lista = List.generate(
       result.length,
       (i) {
-        return Usuario(
+        return Config(
           nome: result[i]['nome'],
           projeto: result[i]['projeto'],
           tarefa: result[i]['tarefa'],
@@ -33,7 +33,7 @@ class UsuarioDAO {
     );
 
     if (result.isEmpty) {
-      return Usuario(
+      return Config(
         nome: 'não definido',
         projeto: 'não definido',
         tarefa: 'não definida',

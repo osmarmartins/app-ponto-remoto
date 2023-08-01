@@ -1,9 +1,9 @@
-class Usuario {
+class Config {
   String nome;
   String projeto;
   String tarefa;
 
-  Usuario({
+  Config({
     required this.nome,
     required this.projeto,
     required this.tarefa,
