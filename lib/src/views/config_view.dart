@@ -30,14 +30,14 @@ class _ConfigPageState extends State<ConfigPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Usuário',
+          'Configuração',
         ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            const TituloWidget(texto: 'Dados do Usuário'),
+            const TituloWidget(texto: 'Dados da tarefa'),
             const Divider(height: 10),
             const SizedBox(height: 20),
             CampoTextoWidget(

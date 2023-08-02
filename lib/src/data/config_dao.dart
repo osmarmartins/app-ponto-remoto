@@ -9,9 +9,9 @@ class ConfigDAO {
 
   Future<void> save(Config config) async {
     final db = await getDB();
-    await db.delete('usuario');
+    await db.delete('config');
     await db.insert(
-      'usuario',
+      'config',
       config.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -19,7 +19,7 @@ class ConfigDAO {
 
   Future<Config> find() async {
     final db = await getDB();
-    final List<Map<String, dynamic>> result = await db.query('usuario');
+    final List<Map<String, dynamic>> result = await db.query('config');
 
     var lista = List.generate(
       result.length,
